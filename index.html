@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>AV1 Bitstream &amp; Decoding Process Specification</title>
-  <link rel="stylesheet" href="/av1-spec/assets/css/style.css">
-  <link rel="stylesheet" href="/av1-spec/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
   <link rel="apple-touch-icon" sizes="57x57" href="assets/images/icons/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="assets/images/icons/apple-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="assets/images/icons/apple-icon-72x72.png">
@@ -1892,7 +1892,7 @@ element is parsed from the bitstream.</p>
 descriptor or can be an expression used to specify its
 existence, type, and value, as in the following examples */
 
-@@syntax_element                                                               f(1)
+<b>syntax_element</b>                                                               f(1)
 
 /* A group of statements enclosed in brackets is a
 compound statement and is treated functionally as a single
@@ -1974,7 +1974,7 @@ The parsing process for this descriptor is specified below:</p>
 <pre class="syntax"><code>le(n) {
     t = 0
     for( i = 0; i &lt; n; i++) {
-        @@byte                                                                 f(8)
+        <b>byte</b>                                                                 f(8)
         t += ( byte &lt;&lt; ( i * 8 ) )
     }
     return t
@@ -1991,7 +1991,7 @@ is byte aligned.</p>
 The parsing process for this descriptor is specified below:</p>
 
 <pre class="syntax"><code>su(n) {
-    @@value                                                                    f(n+1)
+    <b>value</b>                                                                    f(n+1)
     signBit = 1 &lt;&lt; n
     if (value &amp; signBit)
         value = value - 2 * signBit
@@ -2069,10 +2069,10 @@ comparison):</p>
 <pre class="syntax"><code>U( n ) {
     w = floor(log2(n)) + 1
     m = (1 &lt;&lt; w) - n
-    @@v                                                                        L( w - 1 )
+    <b>v</b>                                                                        L( w - 1 )
     if (v &lt; m)
         return v
-    @@extra_bit                                                                L( 1 )
+    <b>extra_bit</b>                                                                L( 1 )
     return (v &lt;&lt; 1) - m + extra_bit
 }
 </code></pre>
@@ -2108,12 +2108,12 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 <h4 id="obu-header-syntax">OBU Header Syntax</h4>
 
 <pre class="syntax"><code>obu_header() {
-    @@obu_forbidden_bit                                                        f(1)
-    @@obu_type                                                                 f(4)
-    @@obu_reserved_2bits                                                       f(2)
-    @@obu_extension_flag                                                       f(1)
+    <b>obu_forbidden_bit</b>                                                        f(1)
+    <b>obu_type</b>                                                                 f(4)
+    <b>obu_reserved_2bits</b>                                                       f(2)
+    <b>obu_extension_flag</b>                                                       f(1)
     if ( obu_extension_flag == 1 )    
-        @@obu_extension_header()                                               f(8)
+        <b>obu_extension_header</b>()                                               f(8)
 }    
 
 </code></pre>
@@ -2121,10 +2121,10 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 <h4 id="obu-extension-header-syntax">OBU Extension Header Syntax</h4>
 
 <pre class="syntax"><code>obu_extension_header() {
-    @@temporal_id                                                              f(3)
-    @@spatial_id                                                               f(2)
-    @@quality_id                                                               f(2)
-    @@reserved_flag                                                            f(1)
+    <b>temporal_id</b>                                                              f(3)
+    <b>spatial_id</b>                                                               f(2)
+    <b>quality_id</b>                                                               f(2)
+    <b>reserved_flag</b>                                                            f(1)
 }    
 </code></pre>
 
@@ -2132,7 +2132,7 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 
 <pre class="syntax"><code>trailing_bits( ) {
     while ( get_position( ) &amp; 7 )
-        @@zero_bit                                                             f(1)
+        <b>zero_bit</b>                                                             f(1)
 }
 </code></pre>
 
@@ -2140,29 +2140,29 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 
 <pre class="syntax"><code>reserved_obu( sz ) {
     for ( i = 0; i &lt; sz; i++ )
-        @@reserved_obu_payload_byte                                            f(8)
+        <b>reserved_obu_payload_byte</b>                                            f(8)
 }    
 </code></pre>
 
 <h3 id="sequence-header-obu-syntax">Sequence Header OBU Syntax</h3>
 
 <pre class="syntax"><code>sequence_header_obu( ) {
-    @@profile_low_bit                                                          f(1)
-    @@profile_high_bit                                                         f(1)
+    <b>profile_low_bit</b>                                                          f(1)
+    <b>profile_high_bit</b>                                                         f(1)
     Profile = (profile_high_bit &lt;&lt; 1) + profile_low_bit
     if ( Profile == 3 )
-        @@reserved_zero                                                        f(1)
-    @@level                                                                    f(4)
-    @@frame_width_bits_minus_1                                                 f(4)
-    @@frame_height_bits_minus_1                                                f(4)
+        <b>reserved_zero</b>                                                        f(1)
+    <b>level</b>                                                                    f(4)
+    <b>frame_width_bits_minus_1</b>                                                 f(4)
+    <b>frame_height_bits_minus_1</b>                                                f(4)
     n = frame_width_bits_minus_1 + 1
-    @@max_frame_width_minus_1                                                  f(n)
+    <b>max_frame_width_minus_1</b>                                                  f(n)
     n = frame_height_bits_minus_1 + 1
-    @@max_frame_height_minus_1                                                 f(n)
-    @@frame_id_numbers_present_flag                                            f(1)
+    <b>max_frame_height_minus_1</b>                                                 f(n)
+    <b>frame_id_numbers_present_flag</b>                                            f(1)
     if ( frame_id_numbers_present_flag ) {    
-        @@frame_id_length_minus7                                               f(4)
-        @@delta_frame_id_length_minus2                                         f(4)
+        <b>frame_id_length_minus7</b>                                               f(4)
+        <b>delta_frame_id_length_minus2</b>                                         f(4)
     }    
     color_config( )    
 }    
@@ -2172,32 +2172,32 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 
 <pre class="syntax"><code>color_config( ) {
     if ( Profile &gt;= 2 ) {
-        @@ten_or_twelve_bit                                                    f(1)
+        <b>ten_or_twelve_bit</b>                                                    f(1)
         BitDepth = ten_or_twelve_bit ? 12 : 10
     } else {
         BitDepth = 8
     }
-    @@color_space                                                              f(5)
-    @@transfer_function                                                        f(5)
+    <b>color_space</b>                                                              f(5)
+    <b>transfer_function</b>                                                        f(5)
     if ( color_space != CS_SRGB ) {
-        @@color_range                                                          f(1)
+        <b>color_range</b>                                                          f(1)
         if ( Profile == 1 || Profile == 3 ) {
-            @@subsampling_x                                                    f(1)
-            @@subsampling_y                                                    f(1)
-            @@reserved_zero                                                    f(1)
+            <b>subsampling_x</b>                                                    f(1)
+            <b>subsampling_y</b>                                                    f(1)
+            <b>reserved_zero</b>                                                    f(1)
         } else {
             subsampling_x = 1
             subsampling_y = 1
         }
         if (subsampling_x &amp;&amp; subsampling_y) {
-            @@chroma_sample_position                                           f(2)
+            <b>chroma_sample_position</b>                                           f(2)
         }
     } else {
         color_range = 1
         if ( Profile == 1 || Profile == 3 ) {
             subsampling_x = 0
             subsampling_y = 0
-            @@reserved_zero                                                    f(1)
+            <b>reserved_zero</b>                                                    f(1)
         }
     }
 }
@@ -2215,16 +2215,16 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 <h3 id="padding-obu-syntax">Padding OBU Syntax</h3>
 
 <pre class="syntax"><code>padding_obu( ) {
-    @@obu_padding_length                                                       f(8)
+    <b>obu_padding_length</b>                                                       f(8)
     for ( i = 0; i &lt; obu_padding_length; i++ )
-        @@obu_padding_byte                                                     f(8)
+        <b>obu_padding_byte</b>                                                     f(8)
 }    
 </code></pre>
 
 <h3 id="metadata-obu-syntax">Metadata OBU Syntax</h3>
 
 <pre class="syntax"><code>metadata_obu( sz ) {
-    @@metadata_type                                                            f(16)
+    <b>metadata_type</b>                                                            f(16)
     if ( metadata_type == METADATA_TYPE_PRIVATE_DATA )
         metadata_private_data( sz − 2 )
     else if ( metadata_type == METADATA_TYPE_HDR_CLL ) 
@@ -2238,7 +2238,7 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 
 <pre class="syntax"><code>metadata_private_data( sz ) {
     for ( i = 0; i &lt; sz; i++ )
-        @@metadata_private_data_payload_byte[ i ]                              f(8)
+        <b>metadata_private_data_payload_byte[ i ]</b>                              f(8)
 }
 </code></pre>
 
@@ -2290,73 +2290,73 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 
 <pre class="syntax"><code>uncompressed_header( ) {
     idLen = frame_id_length_minus7 + 7
-    @@show_existing_frame                                                      f(1)
+    <b>show_existing_frame</b>                                                      f(1)
     if ( show_existing_frame == 1 ) {
-        @@frame_to_show_map_idx                                                f(3)
+        <b>frame_to_show_map_idx</b>                                                f(3)
         refresh_frame_flags = 0
         for ( i = 0; i &lt; FRAME_LF_COUNT; i++ )
             loop_filter_level[ i ] = 0
         if (frame_id_numbers_present_flag) {
-            @@display_frame_id                                                 f(idLen)
+            <b>display_frame_id</b>                                                 f(idLen)
         }
         CurrentVideoFrame += 1
         return
     }
-    @@frame_type                                                               f(2)
-    @@show_frame                                                               f(1)
-    @@error_resilient_mode                                                     f(1)
+    <b>frame_type</b>                                                               f(2)
+    <b>show_frame</b>                                                               f(1)
+    <b>error_resilient_mode</b>                                                     f(1)
     if ( frame_id_numbers_present_flag ) {
-        @@current_frame_id                                                     f(idLen)
+        <b>current_frame_id</b>                                                     f(idLen)
     }
-    @@frame_size_override_flag                                                 f(1)
+    <b>frame_size_override_flag</b>                                                 f(1)
     FrameIsIntra = (frame_type == INTRA_ONLY_FRAME || 
                     frame_type == KEY_FRAME)
     if ( frame_type == KEY_FRAME ) {
         frame_size( )
         render_size( )
-        @@use_128x128_superblock                                               f(1)
-        @@allow_screen_content_tools                                           f(1)
+        <b>use_128x128_superblock</b>                                               f(1)
+        <b>allow_screen_content_tools</b>                                           f(1)
         refresh_frame_flags = 0xFF
         CurrentVideoFrame = 0
     } else {
         if ( frame_type == INTRA_ONLY_FRAME ) {
-            @@allow_screen_content_tools                                       f(1)
+            <b>allow_screen_content_tools</b>                                       f(1)
         }
         if ( error_resilient_mode ) {
             reset_frame_context = 0
         } else {
             if ( frame_type == INTRA_ONLY_FRAME ) {
-                @@intra_reset_all                                              f(1)
+                <b>intra_reset_all</b>                                              f(1)
                 reset_frame_context = 1 + intra_reset_all
             } else {
-                @@reset_frame_context                                          f(1)
+                <b>reset_frame_context</b>                                          f(1)
                 if ( reset_frame_context == 1 ) {
-                    @@intra_reset_all                                          f(1)
+                    <b>intra_reset_all</b>                                          f(1)
                     reset_frame_context = 1 + intra_reset_all
                 }
             }
         }
         if ( frame_type == INTRA_ONLY_FRAME ) {
-            @@refresh_frame_flags                                              f(8)
+            <b>refresh_frame_flags</b>                                              f(8)
             frame_size( )
             render_size( )
-            @@use_128x128_superblock                                           f(1)
+            <b>use_128x128_superblock</b>                                           f(1)
         } else {
             if (frame_type == SWITCH_FRAME ) {
                 refresh_frame_flags = 0xFF
             } else {
-                @@refresh_frame_flags                                          f(8)
+                <b>refresh_frame_flags</b>                                          f(8)
             }
             for( i = 0; i &lt; REFS_PER_FRAME; i++ ) {
-                @@ref_frame_idx[ i ]                                           f(3)
+                <b>ref_frame_idx[ i ]</b>                                           f(3)
                 if (frame_type == SWITCH_FRAME ) {
                     ref_frame_sign_bias[ LAST_FRAME + i ] = 0
                 } else {
-                    @@ref_frame_sign_bias[ LAST_FRAME + i ]                    f(1)
+                    <b>ref_frame_sign_bias[ LAST_FRAME + i ]</b>                    f(1)
                 }
                 if (frame_id_numbers_present_flag) {
                     n = delta_frame_id_length_minus2 + 2
-                    @@delta_frame_id_minus1                                    f(n)
+                    <b>delta_frame_id_minus1</b>                                    f(n)
                     DeltaFrameId = delta_frame_id_minus1 + 1
                     RefFrameId = ((current_frame_id -
                                   DeltaFrameId ) % (1 &lt;&lt; idLen))
@@ -2368,17 +2368,17 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
                 frame_size( )
                 render_size( )
             }
-            @@allow_high_precision_mv                                          f(1)
+            <b>allow_high_precision_mv</b>                                          f(1)
             read_interpolation_filter( )
             if ( error_resilient_mode ) {
                 can_use_previous = 0
             } else {
-                @@can_use_previous                                             f(1)
+                <b>can_use_previous</b>                                             f(1)
             }
         }
     }
     if (show_frame == 0) {
-        @@frame_offset_update                                                  f(4)
+        <b>frame_offset_update</b>                                                  f(4)
         DecodeOrder = CurrentVideoFrame + frame_offset_update
     } else {
         DecodeOrder = CurrentVideoFrame
@@ -2392,9 +2392,9 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
     if ( error_resilient_mode ) {
         frame_parallel_decoding_mode = 1
     } else {
-        @@frame_parallel_decoding_mode                                         f(1)
+        <b>frame_parallel_decoding_mode</b>                                         f(1)
     }
-    @@frame_context_idx                                                        f(3)
+    <b>frame_context_idx</b>                                                        f(3)
     if ( FrameIsIntra || error_resilient_mode ) {
         setup_past_independence ( )
         if ( frame_type == KEY_FRAME || error_resilient_mode == 1 || reset_frame_context == 3 ) {
@@ -2432,7 +2432,7 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
     read_tx_mode( )
     global_motion_params( )
     frame_reference_mode( )
-    @@reduced_tx_set                                                           f(1)
+    <b>reduced_tx_set</b>                                                           f(1)
     tile_info( )
 }
 </code></pre>
@@ -2442,9 +2442,9 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 <pre class="syntax"><code>frame_size( ) {
     if (frame_size_override_flag) {
         n = frame_width_bits_minus_1 + 1
-        @@frame_width_minus_1                                                  f(n)
+        <b>frame_width_minus_1</b>                                                  f(n)
         n = frame_height_bits_minus_1 + 1
-        @@frame_height_minus_1                                                 f(n)
+        <b>frame_height_minus_1</b>                                                 f(n)
         FrameWidth = frame_width_minus_1 + 1
         FrameHeight = frame_height_minus_1 + 1
     } else {
@@ -2458,10 +2458,10 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 <h4 id="render-size-syntax">Render Size Syntax</h4>
 
 <pre class="syntax"><code>render_size( ) {
-    @@render_and_frame_size_different                                          f(1)
+    <b>render_and_frame_size_different</b>                                          f(1)
     if ( render_and_frame_size_different == 1 ) {
-        @@render_width_minus_1                                                 f(16)
-        @@render_height_minus_1                                                f(16)
+        <b>render_width_minus_1</b>                                                 f(16)
+        <b>render_height_minus_1</b>                                                f(16)
         RenderWidth = render_width_minus_1 + 1
         RenderHeight = render_height_minus_1 + 1
     } else {
@@ -2475,7 +2475,7 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 
 <pre class="syntax"><code>frame_size_with_refs( ) {
     for ( i = 0; i &lt; REFS_PER_FRAME; i++ ) {
-        @@found_ref                                                            f(1)
+        <b>found_ref</b>                                                            f(1)
         if ( found_ref == 1 ) {
             FrameWidth = RefFrameWidth[ ref_frame_idx[ i ] ]
             FrameHeight = RefFrameHeight[ ref_frame_idx[ i ] ]
@@ -2506,11 +2506,11 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 <h4 id="interpolation-filter-syntax">Interpolation Filter Syntax</h4>
 
 <pre class="syntax"><code>read_interpolation_filter( ) {
-    @@is_filter_switchable                                                     f(1)
+    <b>is_filter_switchable</b>                                                     f(1)
     if ( is_filter_switchable == 1 ) {
         interpolation_filter = SWITCHABLE
     } else {
-        @@interpolation_filter                                                 f(2)
+        <b>interpolation_filter</b>                                                 f(2)
     }
 }
 </code></pre>
@@ -2518,25 +2518,25 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 <h4 id="loop-filter-params-syntax">Loop Filter Params Syntax</h4>
 
 <pre class="syntax"><code>loop_filter_params( ) {
-    @@loop_filter_level[ 0 ]                                                   f(6)
-    @@loop_filter_level[ 1 ]                                                   f(6)
+    <b>loop_filter_level[ 0 ]</b>                                                   f(6)
+    <b>loop_filter_level[ 1 ]</b>                                                   f(6)
     if ( loop_filter_level[ 0 ] || loop_filter_level[ 1 ] ) {
-        @@loop_filter_level[ 2 ]                                               f(6)
-        @@loop_filter_level[ 3 ]                                               f(6)
+        <b>loop_filter_level[ 2 ]</b>                                               f(6)
+        <b>loop_filter_level[ 3 ]</b>                                               f(6)
     }
-    @@loop_filter_sharpness                                                    f(3)
-    @@loop_filter_delta_enabled                                                f(1)
+    <b>loop_filter_sharpness</b>                                                    f(3)
+    <b>loop_filter_delta_enabled</b>                                                f(1)
     if ( loop_filter_delta_enabled == 1 ) {
-        @@loop_filter_delta_update                                             f(1)
+        <b>loop_filter_delta_update</b>                                             f(1)
         if ( loop_filter_delta_update == 1 ) {
             for ( i = 0; i &lt; TOTAL_REFS_PER_FRAME; i++ ) {
-                @@update_ref_delta                                             f(1)
+                <b>update_ref_delta</b>                                             f(1)
                 if ( update_ref_delta == 1 )
-                    @@loop_filter_ref_deltas[ i ]                              su(6)
+                    <b>loop_filter_ref_deltas[ i ]</b>                              su(6)
                 for ( i = 0; i &lt; 2; i++ ) {
-                    @@update_mode_delta                                        f(1)
+                    <b>update_mode_delta</b>                                        f(1)
                     if ( update_mode_delta == 1 )
-                        @@loop_filter_mode_deltas[ i ]                         su(6)
+                        <b>loop_filter_mode_deltas[ i ]</b>                         su(6)
                 }
             }
         }
@@ -2547,14 +2547,14 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 <h4 id="quantization-params-syntax">Quantization Params Syntax</h4>
 
 <pre class="syntax"><code>quantization_params( ) {
-    @@base_q_idx                                                               f(8)
+    <b>base_q_idx</b>                                                               f(8)
     deltaQYDc = read_delta_q( )
     deltaQUVDc = read_delta_q( )
     deltaQUVAc = read_delta_q( )
-    @@using_qmatrix                                                            f(1)
+    <b>using_qmatrix</b>                                                            f(1)
     if (using_qmatrix) {
-        @@min_qmlevel                                                          f(4)
-        @@max_qmlevel                                                          f(4)
+        <b>min_qmlevel</b>                                                          f(4)
+        <b>max_qmlevel</b>                                                          f(4)
     }
 }
 </code></pre>
@@ -2562,9 +2562,9 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 <h4 id="delta-quantizer-syntax">Delta Quantizer Syntax</h4>
 
 <pre class="syntax"><code>read_delta_q( ) {
-    @@delta_coded                                                              f(1)
+    <b>delta_coded</b>                                                              f(1)
     if ( delta_coded ) {
-        @@delta_q                                                              su(6)
+        <b>delta_q</b>                                                              su(6)
     } else {
         delta_q = 0
     }
@@ -2575,29 +2575,29 @@ each of the syntax elements is presented in <a href="#bitstream-semantics">Secti
 <h4 id="segmentation-params-syntax">Segmentation Params Syntax</h4>
 
 <pre class="syntax"><code>segmentation_params( ) {
-    @@segmentation_enabled                                                     f(1)
+    <b>segmentation_enabled</b>                                                     f(1)
     if ( segmentation_enabled == 1 ) {
         if ( FrameIsIntra || error_resilient_mode ) {
             segmentation_update_map = 1
             segmentation_temporal_update = 0
         } else {
-            @@segmentation_update_map                                          f(1)
+            <b>segmentation_update_map</b>                                          f(1)
             if ( segmentation_update_map == 1 )
-                @@segmentation_temporal_update                                 f(1)
+                <b>segmentation_temporal_update</b>                                 f(1)
         }
-        @@segmentation_update_data                                             f(1)
+        <b>segmentation_update_data</b>                                             f(1)
         if ( segmentation_update_data == 1 ) {
-            @@segmentation_abs_or_delta_update                                 f(1)
+            <b>segmentation_abs_or_delta_update</b>                                 f(1)
             for ( i = 0; i &lt; MAX_SEGMENTS; i++ ) {
                 for ( j = 0; j &lt; SEG_LVL_MAX; j++ ) {
                     feature_value = 0
-                    @@feature_enabled                                          f(1)
+                    <b>feature_enabled</b>                                          f(1)
                     FeatureEnabled[ i ][ j ] = feature_enabled
                     if ( feature_enabled == 1 ) {
                         bitsToRead = Segmentation_Feature_Bits[ j ]
                         feature_value f(bitsToRead)
                         if ( Segmentation_Feature_Signed[ j ] == 1 ) {
-                            @@feature_sign                                     f(1)
+                            <b>feature_sign</b>                                     f(1)
                         }
                     }
                     FeatureData[ i ][ j ] = feature_value
@@ -2625,11 +2625,11 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
     minLog2Tiles = Max(minLog2TileCols, 
                        tile_log2(MAX_TILE_AREA_SB, MaxSbRows * MaxSbCols))
                        
-    @@uniform_tile_spacing_flag                                                f(1)
+    <b>uniform_tile_spacing_flag</b>                                                f(1)
     if ( uniform_tile_spacing_flag ) {
         TileColsLog2 = minLog2TileCols
         while ( TileColsLog2 &lt; maxLog2TileCols ) {
-            @@increment_tile_cols_log2                                         f(1)
+            <b>increment_tile_cols_log2</b>                                         f(1)
             if ( increment_tile_cols_log2 == 1 )
                 TileColsLog2++
             else
@@ -2648,7 +2648,7 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
         maxTileHeightSb = MaxSbRows &gt;&gt; minLog2TileRows
         TileRowsLog2 = minLog2TileRows
         while ( TileRowsLog2 &lt; maxLog2TileRows ) {
-            @@increment_tile_rows_log2                                         f(1)
+            <b>increment_tile_rows_log2</b>                                         f(1)
             if ( increment_tile_rows_log2 == 1 )
                 TileRowsLog2++
             else
@@ -2704,14 +2704,14 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
       }
     }
     if ( TileRowsLog2 &gt; 0 )
-        @@dependent_tiles                                                      f(1)
+        <b>dependent_tiles</b>                                                      f(1)
     else
         dependent_tiles = 0
     if ( TileRowsLog2 &gt; 0 || TileColsLog2 &gt; 0 )
-        @@loop_filter_across_tiles                                             f(1)
+        <b>loop_filter_across_tiles</b>                                             f(1)
     else
         loop_filter_across_tiles = 0
-    @@tile_size_bytes_minus_1                                                  f(2)
+    <b>tile_size_bytes_minus_1</b>                                                  f(2)
     TileSizeBytes = tile_size_bytes_minus_1 + 1
 }
 </code></pre>
@@ -2739,10 +2739,10 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
     delta_q_res = 0
     delta_q_present = 0
     if ( segmentQuantizerActive == 0 &amp;&amp; base_q_idx &gt; 0 ) {
-        @@delta_q_present                                                      f(1)
+        <b>delta_q_present</b>                                                      f(1)
     }
     if ( delta_q_present ) {
-        @@delta_q_res                                                          f(2)
+        <b>delta_q_res</b>                                                          f(2)
     }
 }
 </code></pre>
@@ -2754,10 +2754,10 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
     delta_lf_res = 0
     delta_lf_multi = 0
     if ( delta_q_present ) {
-        @@delta_lf_present                                                     f(1)
+        <b>delta_lf_present</b>                                                     f(1)
         if ( delta_lf_present ) {
-            @@delta_lf_res                                                     f(2)
-            @@delta_lf_multi                                                   f(1)
+            <b>delta_lf_res</b>                                                     f(2)
+            <b>delta_lf_multi</b>                                                   f(1)
         }
     }
 }
@@ -2767,20 +2767,20 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
 
 <pre class="syntax"><code>cdef_params( ) {
     if ( !AllLossless ) {
-        @@cdef_damping_minus_3                                                 f(2)
+        <b>cdef_damping_minus_3</b>                                                 f(2)
         CdefDamping = cdef_damping_minus_3 + 3
-        @@cdef_bits                                                            f(2)
+        <b>cdef_bits</b>                                                            f(2)
         CdefFilterChroma = (subsampling_x == subsampling_y)
         for (i = 0; i &lt; (1 &lt;&lt; cdef_bits); i++) {
-            @@cdef_y_pri_strength[i]                                           f(4)
-            @@cdef_y_filter_skip[i]                                            f(1)
-            @@cdef_y_sec_strength[i]                                           f(2)
+            <b>cdef_y_pri_strength[i]</b>                                           f(4)
+            <b>cdef_y_filter_skip[i]</b>                                            f(1)
+            <b>cdef_y_sec_strength[i]</b>                                           f(2)
             if (cdef_y_sec_strength[i] == 3)
                 cdef_y_sec_strength[i] += 1
             if (CdefFilterChroma) {
-                @@cdef_uv_pri_strength[i]                                      f(4)
-                @@cdef_uv_filter_skip[i]                                       f(1)
-                @@cdef_uv_sec_strength[i]                                      f(2)
+                <b>cdef_uv_pri_strength[i]</b>                                      f(4)
+                <b>cdef_uv_filter_skip[i]</b>                                       f(1)
+                <b>cdef_uv_sec_strength[i]</b>                                      f(2)
                 if (cdef_uv_sec_strength[i] == 3)
                     cdef_uv_sec_strength[i] += 1
             }
@@ -2795,11 +2795,11 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
     if ( AllLossless == 1 ) {
         TxMode = ONLY_4X4
     } else {
-        @@tx_mode_select                                                       f(1)
+        <b>tx_mode_select</b>                                                       f(1)
         if ( tx_mode_select ) {
             TxMode = TX_MODE_SELECT
         } else {
-            @@tx_mode                                                          f(2)
+            <b>tx_mode</b>                                                          f(2)
             TxMode = tx_mode
         }
     }
@@ -2818,11 +2818,11 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
                 compoundReferenceAllowed = 1
     }
     if ( compoundReferenceAllowed ) {
-        @@reference_select                                                     f(1)
+        <b>reference_select</b>                                                     f(1)
         if ( reference_select ) {
             ReferenceMode = REFERENCE_MODE_SELECT
         } else {
-            @@non_single_reference                                             f(1)
+            <b>non_single_reference</b>                                             f(1)
             if (non_single_reference == 0 )
                 ReferenceMode = SINGLE_REFERENCE
             else
@@ -2834,12 +2834,12 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
     if ( FrameIsIntra || comp_pred_mode == COMPOUND_REFERENCE) {
         allow_interintra_compound = 0
     } else {
-        @@allow_interintra_compound                                            f(1)
+        <b>allow_interintra_compound</b>                                            f(1)
     }
     if ( FrameIsIntra || comp_pred_mode == SINGLE_REFERENCE) {
         allow_masked_compound = 0
     } else {
-        @@allow_masked_compound                                                f(1)
+        <b>allow_masked_compound</b>                                                f(1)
     }
 }
 </code></pre>
@@ -2857,13 +2857,13 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
     if ( FrameIsIntra )
         return
     for (ref = LAST_FRAME; ref &lt;= ALTREF_FRAME; ref++) {
-        @@is_global                                                            f(1)
+        <b>is_global</b>                                                            f(1)
         if (is_global) {
-            @@is_rot_zoom                                                      f(1)
+            <b>is_rot_zoom</b>                                                      f(1)
             if (is_rot_zoom) {
                 typ = ROTZOOM
             } else {
-                @@is_translation                                               f(1)
+                <b>is_translation</b>                                               f(1)
                 typ = is_translation ? TRANSLATION : AFFINE
             }
         } else {
@@ -2945,12 +2945,12 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
         if (numSyms &lt;= mk + 3 * a) {
             return decode_uniform(numSyms - mk) + mk
         } else {
-            @@subexp_more_bits                                                 f(1)
+            <b>subexp_more_bits</b>                                                 f(1)
             if (subexp_more_bits) {
                i++
                mk += a
             } else {
-               @@subexp_bits                                                   f(b2)
+               <b>subexp_bits</b>                                                   f(b2)
                return subexp_bits + mk
             }
         }
@@ -2963,10 +2963,10 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
 <pre class="syntax"><code>decode_uniform( n ) {
     w = floor(log2(n)) + 1
     m = (1 &lt;&lt; w) - n
-    @@v                                                                        f( w - 1 )
+    <b>v</b>                                                                        f( w - 1 )
     if (v &lt; m)
         return v
-    @@extra_bit                                                                f( 1 )
+    <b>extra_bit</b>                                                                f( 1 )
     return (v &lt;&lt; 1) - m + extra_bit
 }
 </code></pre>
@@ -3000,8 +3000,8 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
     NumTiles = TileCols * TileRows
     startBitPos = get_position( )
     tileBits = TileColsLog2 + tile_rows_log2
-    @@tg_start                                                                 f(tileBits)
-    @@tg_end                                                                   f(tileBits)
+    <b>tg_start</b>                                                                 f(tileBits)
+    <b>tg_end</b>                                                                   f(tileBits)
     trailing_bits( )
     endBitPos = get_position( )
     headerBytes = (endBitPos - startBitPos) / 8
@@ -3014,7 +3014,7 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
         if ( lastTile ) {
             tile_size = sz
         } else {
-            @@tile_size                                                        le(TileSizeBytes)
+            <b>tile_size</b>                                                        le(TileSizeBytes)
             sz -= tile_size + TileSizeBytes
         }
         MiRowStart = MiRowStarts[ tileRow ]
@@ -3099,12 +3099,12 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
     if (bSize &lt; BLOCK_8X8) {
         partition = PARTITION_NONE
     } else if ( hasRows &amp;&amp; hasCols )
-        @@partition                                                            S
+        <b>partition</b>                                                            S
     } else if ( hasCols ) {
-        @@split_or_horz                                                        S
+        <b>split_or_horz</b>                                                        S
         partition = split_or_horz ? PARTITION_SPLIT : PARTITION_HORZ
     } else if ( hasRows ) {
-        @@split_or_vert                                                        S
+        <b>split_or_vert</b>                                                        S
         partition = split_or_vert ? PARTITION_SPLIT : PARTITION_VERT
     } else {
         partition = PARTITION_SPLIT
@@ -3233,10 +3233,10 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
     RefFrame[ 0 ] = INTRA_FRAME
     RefFrame[ 1 ] = NONE
     is_inter = 0
-    @@intra_frame_y_mode                                                       S
+    <b>intra_frame_y_mode</b>                                                       S
     YMode = intra_frame_y_mode
     if (HasChroma) {
-        @@uv_mode                                                              S
+        <b>uv_mode</b>                                                              S
         UVMode = uv_mode
         if (UVMode == UV_CFL_PRED) {
             read_cfl_alphas( )
@@ -3256,7 +3256,7 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
 
 <pre class="syntax"><code>intra_segment_id( ) {
     if ( segmentation_enabled &amp;&amp; segmentation_update_map )
-        @@segment_id                                                           S
+        <b>segment_id</b>                                                           S
     else
         segment_id = 0
     Lossless = LosslessArray[ segment_id ]
@@ -3269,7 +3269,7 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
     if ( seg_feature_active( SEG_LVL_SKIP ) ) {
         skip = 1
     } else {
-        @@skip                                                                 S
+        <b>skip</b>                                                                 S
     }
 }
 </code></pre>
@@ -3280,15 +3280,15 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
     if ( MiSize == BLOCK_LARGEST &amp;&amp; skip_coeff )
         return
     if ( ReadDeltas ) {
-        @@delta_q_abs                                                          S
+        <b>delta_q_abs</b>                                                          S
         if ( delta_q_abs == DELTA_Q_SMALL ) {
-            @@delta_q_rem_bits                                                 L(3)
+            <b>delta_q_rem_bits</b>                                                 L(3)
             delta_q_rem_bits++
-            @@delta_q_abs_bits                                                 L(delta_q_rem_bits)
+            <b>delta_q_abs_bits</b>                                                 L(delta_q_rem_bits)
             delta_q_abs = delta_q_abs_bits + (1 &lt;&lt; delta_q_rem_bits) + 1
         }
         if (delta_q_abs) {
-            @@delta_q_sign_bit                                                 L(1)
+            <b>delta_q_sign_bit</b>                                                 L(1)
             reducedDeltaQIndex = delta_q_sign_bit ? -delta_q_abs : delta_q_abs
             CurrentQIndex = Clip3(1, 255, CurrentQIndex + (reducedDeltaQIndex &lt;&lt; delta_q_res))
         }
@@ -3303,18 +3303,18 @@ Segmentation_Feature_Signed[ SEG_LVL_MAX ] = { 1, 1, 1, 1, 1, 0, 0 }
         return
     if ( ReadDeltas &amp;&amp; delta_lf_present ) {
         for ( i = 0; i &lt; ( delta_lf_multi ? FRAME_LF_COUNT : 1 ); i++ ) {
-            @@delta_lf_abs                                                     S
+            <b>delta_lf_abs</b>                                                     S
             if ( delta_lf_abs == DELTA_LF_SMALL ) {
-                @@delta_lf_rem_bits                                            L(3)
+                <b>delta_lf_rem_bits</b>                                            L(3)
                 n = delta_lf_rem_bits + 1
-                @@delta_lf_abs_bits                                            L(n)
+                <b>delta_lf_abs_bits</b>                                            L(n)
                 deltaLfAbs = delta_lf_abs_bits +
                                ( 1 &lt;&lt; n ) + 1
             } else {
                 deltaLfAbs = delta_lf_abs
             }
             if ( deltaLfAbs ) {
-                @@delta_lf_sign_bit                                            L(1)
+                <b>delta_lf_sign_bit</b>                                            L(1)
                 reducedDeltaLfLevel = delta_lf_sign_bit ?
                                       -deltaLfAbs :
                                        deltaLfAbs
@@ -3346,7 +3346,7 @@ seg_feature_active( feature ) {
     maxCodedTxSize = maxTxSize + Rect_Tx_Allowed[ MiSize ]
     if ( MiSize &gt; BLOCK_4X4 ) {
         if ( allowSelect &amp;&amp; TxMode == TX_MODE_SELECT ) {
-            @@tx_size                                                          S
+            <b>tx_size</b>                                                          S
             if (tx_size &gt; maxTxSize )
                 tx_size = maxRectTxSize
         } else {
@@ -3424,7 +3424,7 @@ to use a rectangular transform; the table is defined as:</p>
     if (txSz == TX_4X4 || depth == MAX_VARTX_DEPTH) {
         txfm_split = 0
     } else {
-        @@txfm_split                                                           S
+        <b>txfm_split</b>                                                           S
     }
     w4 = Tx_Width[ txSz ] / MI_SIZE
     h4 = Tx_Height[ txSz ] / MI_SIZE
@@ -3497,17 +3497,17 @@ to use a rectangular transform; the table is defined as:</p>
         predictedSegmentId = get_segment_id( )
         if ( segmentation_update_map ) {
             if ( segmentation_temporal_update == 1 ) {
-                @@seg_id_predicted                                             S
+                <b>seg_id_predicted</b>                                             S
                 if ( seg_id_predicted )
                     segment_id = predictedSegmentId
                 else
-                    @@segment_id                                               S
+                    <b>segment_id</b>                                               S
                 for ( i = 0; i &lt; Num_4x4_Blocks_Wide[ MiSize ]; i++ )
                     AboveSegPredContext[ MiCol + i ] = seg_id_predicted
                 for ( i = 0; i &lt; Num_4x4_Blocks_High[ MiSize ]; i++ )
                     LeftSegPredContext[ MiRow + i ] = seg_id_predicted
             } else {
-                @@segment_id                                                   S
+                <b>segment_id</b>                                                   S
             }
         } else {
             segment_id = predictedSegmentId
@@ -3525,7 +3525,7 @@ to use a rectangular transform; the table is defined as:</p>
     if ( seg_feature_active ( SEG_LVL_REF_FRAME ) )
         is_inter = FeatureData[ segment_id ][ SEG_LVL_REF_FRAME ] != INTRA_FRAME
     else
-        @@is_inter                                                             S
+        <b>is_inter</b>                                                             S
 }
 </code></pre>
 
@@ -3555,10 +3555,10 @@ of the segmentation map covered by the current block.</p>
 <pre class="syntax"><code>intra_block_mode_info( ) {
     RefFrame[ 0 ] = INTRA_FRAME
     RefFrame[ 1 ] = NONE
-    @@y_mode                                                                   S
+    <b>y_mode</b>                                                                   S
     YMode = y_mode
     if (HasChroma) {
-        @@uv_mode                                                              S
+        <b>uv_mode</b>                                                              S
         UVMode = uv_mode
         if (UVMode == UV_CFL_PRED) {
             read_cfl_alphas( )
@@ -3593,20 +3593,20 @@ of the segmentation map covered by the current block.</p>
     if ( seg_feature_active( SEG_LVL_SKIP ) ) {
         YMode = GLOBALMV
     } else if ( isCompound ) {
-        @@compound_mode                                                        S
+        <b>compound_mode</b>                                                        S
         YMode = NEAREST_NEARESTMV + compound_mode
     } else {
-        @@new_mv                                                               S
+        <b>new_mv</b>                                                               S
         if ( newmv == 0 ) {
             YMode = NEWMV
         } else if ( AllZero ) {
             YMode = GLOBALMV
         } else {
-            @@zero_mv                                                          S
+            <b>zero_mv</b>                                                          S
             if ( zero_mv == 0 ) {
                 YMode = GLOBALMV
             } else {
-                @@ref_mv                                                       S
+                <b>ref_mv</b>                                                       S
                 YMode = (ref_mv == 0) ? NEARESTMV : NEARMV
             }
         }
@@ -3616,7 +3616,7 @@ of the segmentation map covered by the current block.</p>
     if (YMode == NEWMV || YMode == NEW_NEWMV) {
         for (idx = 0; idx &lt; 2; idx++) {
             if (NumMvCount &gt; idx + 1) {
-                @@drl_mode                                                     S
+                <b>drl_mode</b>                                                     S
                 if (drl_mode == 0) {
                   RefMvIdx = idx
                   break
@@ -3628,7 +3628,7 @@ of the segmentation map covered by the current block.</p>
         RefMvIdx = 1
         for (idx = 1; idx &lt; 3; idx++) {
             if (NumMvCount &gt; idx + 1) {
-                @@drl_mode                                                     S
+                <b>drl_mode</b>                                                     S
                 if ( drl_mode == 0 ) {
                     RefMvIdx = idx
                     break
@@ -3644,7 +3644,7 @@ of the segmentation map covered by the current block.</p>
     if ( interpolation_filter == SWITCHABLE ) {
         for ( dir = 0; dir &lt; 2; dir++ ) {
             if ( needs_interp_filter( ) ) {
-                @@interp_filter[ dir ]                                         S
+                <b>interp_filter[ dir ]</b>                                         S
             } else {
                 interp_filter[ dir ] = EIGHTTAP
             }
@@ -3688,20 +3688,20 @@ of the segmentation map covered by the current block.</p>
         RefFrame[ 1 ] = NONE
     } else {
         if ( ReferenceMode == REFERENCE_MODE_SELECT )
-            @@comp_mode                                                        S
+            <b>comp_mode</b>                                                        S
         else
             comp_mode = ReferenceMode
         if ( comp_mode == COMPOUND_REFERENCE ) {
-            @@comp_ref_type                                                    S
+            <b>comp_ref_type</b>                                                    S
             if (comp_ref_type == UNIDIR_COMP_REFERENCE) {
-                @@uni_comp_ref                                                 S
+                <b>uni_comp_ref</b>                                                 S
                 if (uni_comp_ref) {
                     RefFrame[0] = BWDREF_FRAME
                     RefFrame[1] = ALTREF_FRAME
                 } else {
-                    @@uni_comp_ref_p1                                          S
+                    <b>uni_comp_ref_p1</b>                                          S
                     if (uni_comp_ref_p1) {
-                        @@uni_comp_ref_p2                                      S
+                        <b>uni_comp_ref_p2</b>                                      S
                         if (uni_comp_ref_p2) {
                           RefFrame[0] = LAST_FRAME
                           RefFrame[1] = GOLDEN_FRAME
@@ -3715,19 +3715,19 @@ of the segmentation map covered by the current block.</p>
                     }
                 }
             } else {
-                @@comp_ref                                                     S
+                <b>comp_ref</b>                                                     S
                 if ( comp_ref == 0 ) {
-                    @@comp_ref_p1                                              S
+                    <b>comp_ref_p1</b>                                              S
                     RefFrame[ 0 ] = comp_ref_p1 ?
                                     LAST_FRAME : LAST2_FRAME
                 } else {
-                    @@comp_ref_p2                                              S
+                    <b>comp_ref_p2</b>                                              S
                     RefFrame[ 0 ] = comp_ref_p2 ?
                                     GOLDEN_FRAME : LAST3_FRAME
                 }
-                @@comp_bwdref                                                  S
+                <b>comp_bwdref</b>                                                  S
                 if ( comp_bwdref == 0 ) {
-                    @@comp_bwdref_p1                                           S
+                    <b>comp_bwdref_p1</b>                                           S
                     RefFrame[ 1 ] = comp_bwd_ref ?
                                      ALTREF2_FRAME : BWDREF_FRAME
                 } else {
@@ -3735,24 +3735,24 @@ of the segmentation map covered by the current block.</p>
                 }
             }
         } else {
-            @@single_ref_p1                                                    S
+            <b>single_ref_p1</b>                                                    S
             if ( single_ref_p1 ) {
-                @@single_ref_p2                                                S
+                <b>single_ref_p2</b>                                                S
                 if ( single_ref_p2 == 0 ) {
-                    @@single_ref_p6                                            S
+                    <b>single_ref_p6</b>                                            S
                     RefFrame[ 0 ] = single_ref_p6 ?
                                      ALTREF2_FRAME : BWDREF_FRAME
                 } else {
                     RefFrame[ 0 ] = ALTREF_FRAME
                 }
             } else {
-                @@single_ref_p3                                                S
+                <b>single_ref_p3</b>                                                S
                 if ( single_ref_p3 == 0 ) {
-                    @@single_ref_p5                                            S
+                    <b>single_ref_p5</b>                                            S
                     RefFrame[ 0 ] = single_ref_p5 ?
                                      GOLDEN_FRAME : LAST3_FRAME
                 } else {
-                    @@single_ref_p4                                            S
+                    <b>single_ref_p4</b>                                            S
                     RefFrame[ 0 ] = single_ref_p4 ?
                                      LAST2_FRAME : LAST_FRAME
                 }
@@ -3817,10 +3817,10 @@ of the segmentation map covered by the current block.</p>
     }
     find_warp_samples()
     if ( NumSamples == 0) {
-        @@use_obmc                                                             S
+        <b>use_obmc</b>                                                             S
         motion_mode = use_obmc ? OBMC : SIMPLE
     } else {
-        @@motion_mode                                                          S
+        <b>motion_mode</b>                                                          S
     }
 }
 </code></pre>
@@ -3830,17 +3830,17 @@ of the segmentation map covered by the current block.</p>
 <pre class="syntax"><code>read_interintra_mode( isCompound ) {
     if ( allow_interintra_compound &amp;&amp; !isCompound &amp;&amp; 
          MiSize &gt;= BLOCK_8X8 &amp;&amp; MiSize &lt;= BLOCK_32X32) {
-        @@interintra                                                           S
+        <b>interintra</b>                                                           S
         if (interintra) {
-            @@interintra_mode                                                  S
+            <b>interintra_mode</b>                                                  S
             RefFrame[1] = INTRA_FRAME
             AngleDeltaY = 0
             AngleDeltaUV = 0
             n = Wedge_Bits[ MiSize ]
             if ( n &gt; 0 ) {
-                @@wedge_interintra                                             S
+                <b>wedge_interintra</b>                                             S
                 if (wedge_interintra) {
-                    @@wedge_index                                              L(n)
+                    <b>wedge_index</b>                                              L(n)
                     wedge_sign = 0
                 }
             } else {
@@ -3859,17 +3859,17 @@ of the segmentation map covered by the current block.</p>
     if ( allow_masked_compound &amp;&amp; isCompound &amp;&amp; motion_mode == SIMPLE &amp;&amp; MiSize &gt;= BLOCK_8X8) {
         n = Wedge_Bits[ MiSize ]
         if ( n == 0 ) {
-            @@compound_type                                                    S
+            <b>compound_type</b>                                                    S
         } else {
-            @@compound_avg                                                     L(1)
+            <b>compound_avg</b>                                                     L(1)
             compound_type = compound_avg ?
                             COMPOUND_AVERAGE : COMPOUND_SEG
         }
         if ( compound_type == COMPOUND_WEDGE ) {
-            @@wedge_index                                                      L(n)
-            @@wedge_sign                                                       L(1)
+            <b>wedge_index</b>                                                      L(n)
+            <b>wedge_sign</b>                                                       L(1)
         } else if ( compound_type == COMPOUND_SEG ) {
-            @@mask_type                                                        L(1)
+            <b>mask_type</b>                                                        L(1)
         }
     } else {
         if ( interintra ) {
@@ -3922,7 +3922,7 @@ of the segmentation map covered by the current block.</p>
         MvCtx = MvCtxStack[ idx ][ ref ]
     else
         MvCtx = 0
-    @@mv_joint                                                                 S
+    <b>mv_joint</b>                                                                 S
     if ( mv_joint == MV_JOINT_HZVNZ || mv_joint == MV_JOINT_HNZVNZ )
         diffMv[ 0 ] = read_mv_component( 0 )
     if ( mv_joint == MV_JOINT_HNZVZ || mv_joint == MV_JOINT_HNZVNZ )
@@ -3939,24 +3939,24 @@ previous candidate.</p>
 <h4 id="mv-component-syntax">MV Component Syntax</h4>
 
 <pre class="syntax"><code>read_mv_component( comp ) {
-    @@mv_sign                                                                  S
-    @@mv_class                                                                 S
+    <b>mv_sign</b>                                                                  S
+    <b>mv_class</b>                                                                 S
     if ( mv_class == MV_CLASS_0 ) {
-        @@mv_class0_bit                                                        S
-        @@mv_class0_fr                                                         S
-        @@mv_class0_hp                                                         S
+        <b>mv_class0_bit</b>                                                        S
+        <b>mv_class0_fr</b>                                                         S
+        <b>mv_class0_hp</b>                                                         S
         mag = ( ( mv_class0_bit &lt;&lt; 3 ) |
                 ( mv_class0_fr &lt;&lt; 1 ) |
                   mv_class0_hp ) + 1
     } else {
         d = 0
         for ( i = 0; i &lt; mv_class; i++ ) {
-            @@mv_bit                                                           S
+            <b>mv_bit</b>                                                           S
             d |= mv_bit &lt;&lt; i
         }
         mag = CLASS0_SIZE &lt;&lt; ( mv_class + 2 )
-        @@mv_fr                                                                S
-        @@mv_hp                                                                S
+        <b>mv_fr</b>                                                                S
+        <b>mv_hp</b>                                                                S
         mag += ( ( d &lt;&lt; 3 ) | ( mv_fr &lt;&lt; 1 ) | mv_hp ) + 1
     }
     return mv_sign ? -mag : mag
@@ -4237,27 +4237,27 @@ for the specified plane.
                        Coefband_4x8_8x4[ c ] :
                        Coefband_8x8_Plus[ c ]
         if ( c == 0 ) {
-            @@dc_head_token                                                    S
+            <b>dc_head_token</b>                                                    S
             if ( dc_head_token == 0 )
                 return 0
             combToken = dc_head_token
         } else if (c == segEob - 1) {
-            @@last_head_token                                                  L(1)
+            <b>last_head_token</b>                                                  L(1)
             combToken = 2 * (last_head_token + 1)
         } else {
-            @@ac_head_token                                                    S
+            <b>ac_head_token</b>                                                    S
             combToken = ac_head_token + 1
         }
         token = combToken &gt;&gt; 1
         moreCoefs = combToken &amp; 1
         if ( token &gt; ONE_TOKEN ) {
-            @@tail_token                                                       S
+            <b>tail_token</b>                                                       S
             token += tail_token
         }
         TokenCache[ pos ] = Energy_Class[ token ]
         if ( token != ZERO_TOKEN ) {
             coef = read_coef( token )
-            @@sign_bit                                                         L(1)
+            <b>sign_bit</b>                                                         L(1)
             Tokens[ pos ] = sign_bit ? -coef : coef
         }
         if ( !moreCoefs )
@@ -4436,7 +4436,7 @@ get_scan( plane, txSz ) {
     cdfIndex = 0
     while ( count &lt; extraBitCount ) {
         bits = Min( extraBitCount - count, 4 )
-        @@coef_extra_bits                                                S
+        <b>coef_extra_bits</b>                                                S
         coef |= coef_extra_bits &lt;&lt; count
         count += bits
         cdfIndex += 1
@@ -4468,11 +4468,11 @@ get_scan( plane, txSz ) {
     if ( MiSize &gt;= BLOCK_8X8 ) {
         n = 2 * MAX_ANGLE_DELTA + 1
         if ( is_directional_mode( YMode ) ) {
-            @@angle_delta_y                                                    U(n)
+            <b>angle_delta_y</b>                                                    U(n)
             AngleDeltaY = angle_delta_y - MAX_ANGLE_DELTA
         }
         if ( is_directional_mode( UVMode ) ) {
-            @@angle_delta_uv                                                   U(n)
+            <b>angle_delta_uv</b>                                                   U(n)
             AngleDeltaUV = angle_delta_uv - MAX_ANGLE_DELTA
         }
     }
@@ -4493,11 +4493,11 @@ get_scan( plane, txSz ) {
 <h4 id="read-cfl-alphas-syntax">Read CFL Alphas Syntax</h4>
 
 <pre class="syntax"><code>read_cfl_alphas() {
-    @@cfl_alpha_signs                                                          S
+    <b>cfl_alpha_signs</b>                                                          S
     signU = (cfl_alpha_signs + 1 ) / 3
     signV = (cfl_alpha_signs + 1 ) % 3
     if (signU != CFL_SIGN_ZERO) {
-        @@cfl_alpha_u                                                          S
+        <b>cfl_alpha_u</b>                                                          S
         CflAlphaU = 1 + cfl_alpha_u
         if (signU == CFL_SIGN_NEG)
             CflAlphaU = -CflAlphaU
@@ -4505,7 +4505,7 @@ get_scan( plane, txSz ) {
       CflAlphaU = 0
     }
     if (signV != CFL_SIGN_ZERO) {
-        @@cfl_alpha_v                                                          S
+        <b>cfl_alpha_v</b>                                                          S
         CflAlphaV = 1 + cfl_alpha_v
         if (signV == CFL_SIGN_NEG)
             CflAlphaV = -CflAlphaV
@@ -4519,30 +4519,30 @@ get_scan( plane, txSz ) {
 
 <pre class="syntax"><code>palette_mode_info( ) {
     if ( YMode == DC_PRED ) {
-        @@has_palette_y                                                        S
+        <b>has_palette_y</b>                                                        S
         if ( has_palette_y ) {
-            @@palette_size_y_minus_2                                           S
+            <b>palette_size_y_minus_2</b>                                           S
             PaletteSizeY = palette_size_y_minus_2 + 2
             cacheN = get_palette_cache( 0 )
             idx = 0
             for ( i = 0; i &lt; cacheN &amp;&amp; idx &lt; PaletteSizeY; i++ ) {
-                @@use_palette_color_cache_y                                    L(1)
+                <b>use_palette_color_cache_y</b>                                    L(1)
                 if ( use_palette_color_cache_y ) {
                     palette_colors_y[ idx ] = PaletteCache[ i ]
                     idx++
                 }
             }
             if ( idx &lt; PaletteSizeY ) {
-                @@palette_colors_y[ idx ]                                      L(BitDepth)
+                <b>palette_colors_y[ idx ]</b>                                      L(BitDepth)
                 idx++
             }
             if ( idx &lt; PaletteSizeY ) {
                 minBits = BitDepth - 3
-                @@palette_num_extra_bits_y                                     L(2)
+                <b>palette_num_extra_bits_y</b>                                     L(2)
                 paletteBits = minBits + palette_num_extra_bits_y
             }
             while ( idx &lt; PaletteSizeY ) {
-                @@palette_delta_y                                              L(paletteBits)
+                <b>palette_delta_y</b>                                              L(paletteBits)
                 palette_delta_y++
                 palette_colors_y[ idx ] =
                           Clip1( palette_colors_y[ idx - 1 ] +
@@ -4555,30 +4555,30 @@ get_scan( plane, txSz ) {
         }
     }
     if ( UVMode == DC_PRED ) {
-        @@has_palette_uv                                                       S
+        <b>has_palette_uv</b>                                                       S
         if ( has_palette_uv ) {
-            @@palette_size_uv_minus_2                                          S
+            <b>palette_size_uv_minus_2</b>                                          S
             PaletteSizeUV = palette_size_uv_minus_2 + 2
             cacheN = get_palette_cache( 1 )
             idx = 0
             for ( i = 0; i &lt; cacheN &amp;&amp; idx &lt; PaletteSizeUV; i++ ) {
-                @@use_palette_color_cache_u                                    L(1)
+                <b>use_palette_color_cache_u</b>                                    L(1)
                 if ( use_palette_color_cache_u ) {
                     palette_colors_u[ idx ] = PaletteCache[ i ]
                     idx++
                 }
             }
             if ( idx &lt; PaletteSizeUV ) {
-                @@palette_colors_u[ idx ]                                      L(BitDepth)
+                <b>palette_colors_u[ idx ]</b>                                      L(BitDepth)
                 idx++
             }
             if ( idx &lt; PaletteSizeUV ) {
                 minBits = BitDepth - 3
-                @@palette_num_extra_bits_u                                     L(2)
+                <b>palette_num_extra_bits_u</b>                                     L(2)
                 paletteBits = minBits + palette_num_extra_bits_u
             }
             while ( idx &lt; PaletteSizeUV ) {
-                @@palette_delta_u                                              L(paletteBits)
+                <b>palette_delta_u</b>                                              L(paletteBits)
                 palette_colors_u[ idx ] = 
                           Clip1( palette_colors_u[ idx - 1 ] +
                                  palette_delta_u )
@@ -4588,17 +4588,17 @@ get_scan( plane, txSz ) {
             }
             sort( palette_colors_u, 0, PaletteSizeUV - 1 )
             
-            @@delta_encode_palette_colors_v                                    L(1)
+            <b>delta_encode_palette_colors_v</b>                                    L(1)
             if ( delta_encode_palette_colors_v ) {
                 minBits = BitDepth - 4
                 maxVal = 1 &lt;&lt; BitDepth
-                @@palette_num_extra_bits_v                                     L(2)
+                <b>palette_num_extra_bits_v</b>                                     L(2)
                 paletteBits = minBits + palette_num_extra_bits_v
-                @@palette_colors_v[ 0 ]                                        L(BitDepth)
+                <b>palette_colors_v[ 0 ]</b>                                        L(BitDepth)
                 for ( idx = 1; idx &lt; PaletteSizeUV; idx++ ) {
-                    @@palette_delta_v                                          L(paletteBits)
+                    <b>palette_delta_v</b>                                          L(paletteBits)
                     if ( palette_delta_v ) {
-                        @@palette_delta_sign_bit_v                             L(1)
+                        <b>palette_delta_sign_bit_v</b>                             L(1)
                         if ( palette_delta_sign_bit_v ) {
                             palette_delta_v = -palette_delta_v
                         }
@@ -4610,7 +4610,7 @@ get_scan( plane, txSz ) {
                 }
             } else {
                 for ( idx = 0; idx &lt; PaletteSizeUV; idx++ ) {
-                    @@palette_colors_v[ idx ]                                  L(BitDepth)
+                    <b>palette_colors_v[ idx ]</b>                                  L(BitDepth)
                 }
             }
         }
@@ -4689,13 +4689,13 @@ subarray to be sorted is between indices i1 and i2 inclusive.</p>
         if ( is_inter ) {
             set = Tx_Set_Index_Inter[ setType ]
             if ( set &gt; 0 ) {
-                @@inter_tx_type                                                S
+                <b>inter_tx_type</b>                                                S
                 TxType = inter_tx_type
             }
         } else {
             set = Tx_Set_Index_Intra[ setType ]
             if ( set &gt; 0 ) {
-                @@intra_tx_type                                                S
+                <b>intra_tx_type</b>                                                S
                 TxType = intra_tx_type
             }
         }
@@ -4732,12 +4732,12 @@ subarray to be sorted is between indices i1 and i2 inclusive.</p>
     onscreenWidth = Min( blockWidth, (MiCols - MiCol) * MI_SIZE )
 
     if ( PaletteSizeY ) {
-        @@color_index_map_y                                                    U(PaletteSizeY)
+        <b>color_index_map_y</b>                                                    U(PaletteSizeY)
         ColorMapY[0][0] = color_index_map_y
         for ( i = 1; i &lt; onscreenHeight + onscreenWidth - 1; i++ ) {
             for ( j = Min( i, onscreenWidth - 1 ); j &gt;= Max( 0, i - onscreenHeight + 1 ); j-- ) {
                 get_palette_color_context( ColorMapY, ( i - j ), j, PaletteSizeY )
-                @@palette_color_idx_y                                   S
+                <b>palette_color_idx_y</b>                                   S
                 ColorMapY[ i - j ][ j ] = ColorOrder[ palette_color_idx_y ]
             }
         }
@@ -4754,7 +4754,7 @@ subarray to be sorted is between indices i1 and i2 inclusive.</p>
     }
 
     if ( PaletteSizeUV ) {
-        @@color_index_map_uv                                                   U(PaletteSizeUV)
+        <b>color_index_map_uv</b>                                                   U(PaletteSizeUV)
         ColorMapUV[0][0] = color_index_map_uv
         blockHeight = blockHeight &gt;&gt; subsampling_y
         blockWidth = blockWidth &gt;&gt; subsampling_x
@@ -4764,7 +4764,7 @@ subarray to be sorted is between indices i1 and i2 inclusive.</p>
         for ( i = 1; i &lt; onscreenHeight + onscreenWidth - 1; i++ ) {
             for ( j = Min( i, onscreenWidth - 1 ); j &gt;= Max( 0, i - onscreenHeight + 1 ); j-- ) {
                 get_palette_color_context( ColorMapUV, ( i - j ), j, PaletteSizeUV )
-                @@palette_color_idx_uv                                  S
+                <b>palette_color_idx_uv</b>                                  S
                 ColorMapUV[ i - j ][ j ] = ColorOrder[ palette_color_idx_uv ]
             }
         }
@@ -4923,7 +4923,7 @@ check_golden(refFrame) {
                 if (sb_all_skip(i, j, step4))
                     cdef_idx[ i ][ j ] = -1
                 else
-                    @@cdef_idx[ i ][ j ]                                       S
+                    <b>cdef_idx[ i ][ j ]</b>                                       S
             }
         }
     }
@@ -25497,7 +25497,7 @@ a container format alongside audio and timing information.</p>
 
   <pre class="syntax"><code>raw_bitstream( sz ) {
     while ( sz &gt; 0 ) {
-        @@obu_size                                                             le(4)
+        <b>obu_size</b>                                                             le(4)
         open_bitstream_unit( obu_size )
         sz -= 4 + obu_size
     }
@@ -25931,7 +25931,7 @@ escaping.</p>
 
 <p class="alert alert-warning"><strong>Corner-case kramdown bug</strong><br />
 Actually, the table below exposes a kramdown bug. Each line of pseudocode is
-delimited with backticks except for line 3 (<code>@@profile_low_bit</code>). For reasons
+delimited with backticks except for line 3 (<code><b>profile_low_bit</b></code>). For reasons
 unknown, delimiting this string with backticks breaks table transformation.</p>
 
 <h3 class="no_toc no_count" id="unimpressed-footer-syntax">Unimpressed Footer Syntax</h3>
@@ -25950,15 +25950,15 @@ unknown, delimiting this string with backticks breaks table transformation.</p>
     </tr>
     <tr>
       <td>f(2)</td>
-      <td><code>    @@frame_marker</code></td>
+      <td><code>    <b>frame_marker</b></code></td>
     </tr>
     <tr>
       <td>f(1)</td>
-      <td>@@profile_low_bit</td>
+      <td><b>profile_low_bit</b></td>
     </tr>
     <tr>
       <td>f(1)</td>
-      <td><code>    @@profile_high_bit</code></td>
+      <td><code>    <b>profile_high_bit</b></code></td>
     </tr>
     <tr>
       <td> </td>
@@ -25970,11 +25970,11 @@ unknown, delimiting this string with backticks breaks table transformation.</p>
     </tr>
     <tr>
       <td>f(1)</td>
-      <td><code>        @@reserved_zero</code></td>
+      <td><code>        <b>reserved_zero</b></code></td>
     </tr>
     <tr>
       <td>f(1)</td>
-      <td><code>    @@show_existing_frame</code></td>
+      <td><code>    <b>show_existing_frame</b></code></td>
     </tr>
     <tr>
       <td> </td>
@@ -25982,7 +25982,7 @@ unknown, delimiting this string with backticks breaks table transformation.</p>
     </tr>
     <tr>
       <td>f(3)</td>
-      <td><code>        @@frame_to_show_map_idx</code></td>
+      <td><code>        <b>frame_to_show_map_idx</b></code></td>
     </tr>
     <tr>
       <td> </td>
@@ -26010,11 +26010,11 @@ unknown, delimiting this string with backticks breaks table transformation.</p>
     </tr>
     <tr>
       <td>f(1)</td>
-      <td><code>    @@frame_type</code></td>
+      <td><code>    <b>frame_type</b></code></td>
     </tr>
     <tr>
       <td>f(1)</td>
-      <td><code>    @@show_frame</code></td>
+      <td><code>    <b>show_frame</b></code></td>
     </tr>
     <tr>
       <td> </td>
@@ -26030,7 +26030,7 @@ unknown, delimiting this string with backticks breaks table transformation.</p>
     </tr>
     <tr>
       <td>f(1)</td>
-      <td><code>        @@intra_only</code></td>
+      <td><code>        <b>intra_only</b></code></td>
     </tr>
     <tr>
       <td> </td>
