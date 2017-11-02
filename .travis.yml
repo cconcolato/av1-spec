@@ -7,6 +7,6 @@ install:
   - rbenv local 2.3.0
   - bundle install
   - npm install
-script: bundle exec jekyll build
+script: bundle exec jekyll build && ghp_deploy.sh
 deploy:
   skip_cleanup: true
