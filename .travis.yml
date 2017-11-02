@@ -1,6 +1,8 @@
 language: ruby
 rvm:
   - 2.3.0
+before_install:
+  - chmod +x ghp_deploy.sh
 install:
   - bundle install
   - npm install
