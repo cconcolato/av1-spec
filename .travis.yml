@@ -2,9 +2,8 @@ language: ruby
 rvm:
   - 2.3.0
 install:
-  - rbenv local 2.3.0
   - bundle install
   - npm install
-script: bundle exec jekyll build && ghp_deploy.sh
+script: bundle exec jekyll build && grunt && ghp_deploy.sh
 deploy:
   skip_cleanup: true
