@@ -4,6 +4,6 @@ rvm:
 install:
   - bundle install
   - npm install
-script: bundle exec jekyll build && grunt && ghp_deploy.sh
+script: bundle exec jekyll build && grunt && ./ghp_deploy.sh
 deploy:
   skip_cleanup: true
